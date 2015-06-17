@@ -122,6 +122,7 @@ while true && !final_round
 	    num_of_dices = 5
 	    temp = 0
       end     
+      #Checks for the final round
       game.score.each do |val|
             check_final = 1 if val>=1500
       end	
@@ -133,6 +134,7 @@ puts "\n\n\nThe final score board is #{game.score}."
 winning_score = game.score.max
 print "The winner is "
 index = 1
+#If there are more than 1 players with the same highest score all will win
 game.score.each do |val|
 	print "Player #{index} " if val==winning_score
 	index+=1
