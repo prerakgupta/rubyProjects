@@ -1,10 +1,19 @@
+
 class MarsRovers
 
-      @@start_x
-      @@start_y
-      @@last_x
-      @@last_y
-      @@position
+      def MarsRovers.start_x
+          @@start_x
+      end
+      def MarsRovers.start_y
+          @@start_y
+      end	  	  	  
+      def MarsRovers.last_x
+      	  @@last_x
+      end
+      def MarsRovers.last_y	  
+          @@last_y
+      end	  	  
+          @@position
 
       def initialize(x1, y1, x2, y2)
       	  @@start_x = x1
@@ -43,6 +52,7 @@ class Bot < MarsRovers
 	  @pos_y = y
 	  @dir = dir
 	  @movement = { "N" => ["W", "E"], "E" => ["N", "S"], "W" => ["S", "N"], "S" => ["E", "W"]}
+
       end
 
       def move(way)
@@ -65,22 +75,33 @@ class Bot < MarsRovers
 end
 
 rightmost = gets.chomp
-rightmost = rightmost.split(" ")
-squad = MarsRovers.new(0, 0, rightmost[0].to_i, rightmost[1].to_i)
-input = gets.chomp
+rightmost = rightmost.split(/\s+/)
+if(rightmost[0].to_i<=0 || rightmost[1].to_i<=0)
+	puts "\nMars is no longer a plateau. Quitting Nasa mission.\n\n"					
+else
 
-while(input!=nil)
-	cord = input.split(" ")
-	new_bot = Bot.new(cord[0].to_i, cord[1].to_i, cord[2])
-	sequence = gets.chomp
-	index = 0
-	while(index<sequence.length)
-		sequence[index].upcase!
-		new_bot.move(sequence[index])
-		index+=1
-	end
-	puts "\n#{new_bot.pos_x} #{new_bot.pos_y} #{new_bot.dir}\n"
-	puts "Enter new position and moves or q to exit"
+	squad = MarsRovers.new(0, 0, rightmost[0].to_i, rightmost[1].to_i)
 	input = gets.chomp
-	break if input=="q"
+	
+	while(input!=nil)
+		cord = input.split(/\s+/)
+		if(cord[0].to_i < MarsRovers.start_x.to_i || cord[0].to_i > MarsRovers.last_x || cord[1].to_i < MarsRovers.start_y || cord[1].to_i > MarsRovers.last_y)
+			puts "Invalid input. The bot is in outer space!"
+			input = gets.chomp
+			next
+		else		
+			new_bot = Bot.new(cord[0].to_i, cord[1].to_i, cord[2])
+			sequence = gets.chomp
+			index = 0
+			while(index<sequence.length)
+				letter = sequence[index].upcase
+				new_bot.move(letter)
+				index+=1
+			end
+			puts "\nFinal position: #{new_bot.pos_x} #{new_bot.pos_y} #{new_bot.dir}\n"
+			puts "\nEnter new position and moves or q to exit"
+			input = gets.chomp
+			break if input=="q"
+		end	
+	end
 end
